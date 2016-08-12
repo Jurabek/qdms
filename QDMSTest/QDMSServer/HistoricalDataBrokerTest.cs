@@ -49,7 +49,7 @@ namespace QDMSTest
             _cfBrokerMock = new Mock<IContinuousFuturesBroker>();
             _cfBrokerMock.SetupGet(x => x.Connected).Returns(true);
 
-            _broker = new HistoricalDataBroker(_localStorageMock.Object, new List<IHistoricalDataSource> { _dataSourceMock.Object }, _cfBrokerMock.Object);
+            _broker = new HistoricalDataBroker(_cfBrokerMock.Object, _localStorageMock.Object, new List<IHistoricalDataSource> { _dataSourceMock.Object });
 
             _dataSourceMock.SetupGet(x => x.Connected).Returns(true);
         }
@@ -413,7 +413,6 @@ namespace QDMSTest
         }
 
         [Test]
-        [ExpectedException]
         public void ThrowsExceptionWhenMakingRequestForInstrumentWithDataSourceThatDoesNotExist()
         {
             _instrument.Datasource.Name = "ASDfasdf___________________aasdf";
@@ -421,11 +420,10 @@ namespace QDMSTest
                  dataLocation: DataLocation.Both,
                  saveToLocalStorage: false,
                  rthOnly: true);
-            _broker.RequestHistoricalData(request);
+            Assert.Throws<Exception>(() => _broker.RequestHistoricalData(request));
         }
 
         [Test]
-        [ExpectedException]
         public void ThrowsExceptionWhenMakingRequestForInstrumentWithDataSourceThatDoesNotExistAndForcingFreshData()
         {
             _instrument.Datasource.Name = "ASDfasdf___________________aasdf";
@@ -433,11 +431,10 @@ namespace QDMSTest
                  dataLocation: DataLocation.ExternalOnly,
                  saveToLocalStorage: false,
                  rthOnly: true);
-            _broker.RequestHistoricalData(request);
+            Assert.Throws<Exception>(() => _broker.RequestHistoricalData(request));
         }
 
         [Test]
-        [ExpectedException]
         public void ThrowsExceptionWhenMakingRequestForInstrumentWithDataSourceThatIsDisconnected()
         {
             var request = new HistoricalDataRequest(_instrument, BarSize.OneDay, new DateTime(2012, 1, 1), new DateTime(2013, 1, 1),
@@ -447,7 +444,7 @@ namespace QDMSTest
 
             _dataSourceMock.SetupGet(x => x.Connected).Returns(false);
 
-            _broker.RequestHistoricalData(request);
+            Assert.Throws<Exception>(() =>_broker.RequestHistoricalData(request));
         }
     }
 }
