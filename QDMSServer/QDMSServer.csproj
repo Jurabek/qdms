@@ -286,6 +286,8 @@
     <Compile Include="ValueConverters\TimeSpanConverter.cs" />
     <Compile Include="ValueConverters\TZToStringConverter.cs" />
     <Compile Include="ViewModels\AddInstrumentIbViewModel.cs" />
+    <Compile Include="ViewModels\DataUpdateJobDetailsViewModel.cs" />
+    <Compile Include="ViewModels\SchedulerViewModel.cs" />
     <Compile Include="Windows\AboutWindow.xaml.cs">
       <DependentUpon>AboutWindow.xaml</DependentUpon>
     </Compile>
